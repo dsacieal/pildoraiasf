@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <name>Set_rcHighPriorityCases</name>
+        <label>Set rcHighPriorityCases</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>rc_Cases</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_High_Priority_Open_Cases</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Finds High Priority Cases for a given Contact</description>
+    <environments>Default</environments>
+    <interviewLabel>High Priority Open Cases for a given Contact Name {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>High Priority Open Cases for a given Contact Name</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get Contact records by name</description>
+        <name>Get_Contact_by_Name</name>
+        <label>Get Contact by Name</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_High_Priority_Open_Cases</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>contactName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get a list of open case records with high or critical priority</description>
+        <name>Get_High_Priority_Open_Cases</name>
+        <label>Get High Priority Open Cases</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_rcHighPriorityCases</targetReference>
+        </connector>
+        <filterLogic>1 AND 4 AND (2 OR 3)</filterLogic>
+        <filters>
+            <field>ContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contact_by_Name.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Priority</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>High</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Priority</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Critical</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>CaseNumber</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Priority</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+        <sortField>CaseNumber</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Contact_by_Name</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Name of contact record</description>
+        <name>contactName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>List of case records</description>
+        <name>rc_Cases</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>
