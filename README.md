@@ -12,6 +12,9 @@ System.debug('Ciudad: '+ZipCodeName.getCityForZipCode(zipcode));
 
 1. Creacion de copilot action sobre apex Class ZipCodeName
     1.1 Informar input y output instructions:
+   
         1.1.1 Input: the zipcode value for which city name needs to be find
+   
         1.1.2 Output: Show the name of the city to the user
+   
     1.2 Seleccionar required input para la entrada y show in conversation para la salida
