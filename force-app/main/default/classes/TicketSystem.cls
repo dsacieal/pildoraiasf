@@ -17,6 +17,7 @@ public class TicketSystem {
         httpRequest httpReq = new httpRequest();
         httpReq.setMethod('POST');
         httpReq.setHeader('Content-Type', 'application/json');
+      //create free freshdesk instance and define namedCredentials https://www.freshworks.com/freshdesk/signup/
         httpReq.setEndpoint('callout:freshDesk');
         //httpReq.setHeader('Authorization', 'Basic '+EncodingUtil.base64Encode(Blob.valueOf(cred)));
         httpReq.setBody(requestBody);

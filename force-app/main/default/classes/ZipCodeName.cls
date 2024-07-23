@@ -2,15 +2,15 @@ public class ZipCodeName {
 
     
     @InvocableMethod(callout=true  
-                     description='This Action Find the Name of the City based on the Zipcode given to it, for example when the user ask find the name of the City whose zip code is 90210 then it returns the city name')
+                     description='This Action Find the Name of the City based on the Zipcode given to it, for example when the user ask find the name of the City whose zip code is 90210 then it returns the city name)')
     public static List<String> getCityForZipCode(List<Integer> zipCode){
         Integer zipCodeToFind = zipCode[0];
         
         Http h = new Http();
         HttpRequest req = new HttpRequest();
-        req.setEndpoint('https://api.zipcodestack.com/v1/search?codes=' + zipCodeToFind );
+        req.setEndpoint('https://api.zipcodestack.com/v1/search?codes=' + zipCodeToFind+'&country=ES');
         req.setMethod('GET');
-        req.setHeader('apikey', 'YOUR_API_KEY');
+        req.setHeader('apikey', '01J1HW7A6M8Y1K8ZCWHHRDY8TC');
         
         // Send the request, and return a response
         HttpResponse res = h.send(req);
